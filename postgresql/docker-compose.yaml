@@ -11,6 +11,4 @@ services:
       POSTGRES_PASSWORD: Arkam2004
       POSTGRES_DB: AuthDb
     ports:
-      - 5432:5432
-    volumes:
-      - ./create-auth-schema.sql:/docker-entrypoint-initdb.d/create-auth-schema.sql
+      - 5431:5432
