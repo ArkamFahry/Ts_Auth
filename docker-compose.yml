@@ -7,6 +7,20 @@ services:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      NODE_ENV: production
+      # When set to dev a swagger ui will be exposed at http://host:port/swagger
+      # when set to prod swagger ui will be off
+      NODE_ENV: prod
+      # exposed port for the server
+      PORT: 3011
+      # frontend url for the client web site
+      FRONTEND_URL: http://localhost:3000
+      # default role assigned to every user by default this role also needs to exist on ALLOWED_ROLES roles list
+      DEFAULT_ROLE: user
+      # a list of roles that can be assigned to users
+      ALLOWED_ROLES: admin,user
+      # The secret key for the access_token put this in a env
+      ACCESS_TOKEN_SECRET: eyJzdWIiOiIzNzJmZTJiYS0yNDM5LTQwMmMtYTczZS0yYjNhYTBhODkyNTUiLCJpYXQiOjE2NTUzNzM1NDAsImV4cCI6MT
+      # The secret key for the refresh_token put this in a env
+      REFRESH_TOKEN_SECRET: bImFkbWluIiwidXNlciIsImRldmVsb3BlciIsIm1hbmFnZXIiLCJ0ZXN0ZXIiXSwieC1oYXN1cmEtZW1haWwiOiJBcmthbU
     ports:
       - 3011:3011

@@ -1,17 +1,22 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import * as argon2 from 'argon2';
 import {
   UpdateEmailDto,
   UpdateFullNameDto,
+  UpdateMetadataDto,
   UpdatePasswordDto,
   UpdateRoleDto,
   UpdateUserNameDto,
 } from './dto';
+import { HashData, VerifyData } from '../common/crypto';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private Hash: HashData,
+    private Verify: VerifyData,
+  ) {}
 
   async get_user(user_id: string) {
     const user = await this.prisma.users.findUnique({
@@ -27,6 +32,7 @@ export class UserService {
         active: true,
         created_at: true,
         updated_at: true,
+        metadata: true,
       },
     });
 
@@ -51,7 +57,7 @@ export class UserService {
     if (user.email !== email)
       throw new ForbiddenException('Wrong Email Cannot Delete User Account');
 
-    const matchPassword = await argon2.verify(user.password, password);
+    const matchPassword = await this.Verify.verifyData(user.password, password);
 
     if (!matchPassword)
       throw new ForbiddenException('Wrong Password Cannot Delete User Account');
@@ -185,11 +191,14 @@ export class UserService {
       },
     });
 
-    const matchPassword = await argon2.verify(user.password, dto.old_password);
+    const matchPassword = await this.Verify.verifyData(
+      user.password,
+      dto.old_password,
+    );
 
     if (!matchPassword) throw new ForbiddenException('Wrong Password');
 
-    const hash = (await this.hashData(dto.new_password)).toString();
+    const hash = (await this.Hash.hashData(dto.new_password)).toString();
 
     await this.prisma.users.update({
       where: {
@@ -204,7 +213,14 @@ export class UserService {
     return 'Password Updated Successfully';
   }
 
-  hashData(data: string) {
-    return argon2.hash(data);
+  async update_user_metadata(user_id: string, dto: UpdateMetadataDto) {
+    await this.prisma.users.update({
+      where: {
+        id: user_id,
+      },
+      data: {
+        metadata: dto.metadata,
+      },
+    });
   }
 }

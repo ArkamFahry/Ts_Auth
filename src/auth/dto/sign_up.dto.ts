@@ -55,10 +55,8 @@ export class SignUpDto {
   full_name: string;
 
   @ApiProperty({
-    type: String,
-    description: 'A pre-defined role from the database',
+    type: JSON,
+    description: 'A valid Json Object',
   })
-  @IsNotEmpty()
-  @IsString()
-  role: string;
+  metadata: any;
 }

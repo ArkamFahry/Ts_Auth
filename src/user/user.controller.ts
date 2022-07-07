@@ -15,6 +15,7 @@ import {
   DeleteUserDto,
   UpdateEmailDto,
   UpdateFullNameDto,
+  UpdateMetadataDto,
   UpdatePasswordDto,
   UpdateRoleDto,
   UpdateUserNameDto,
@@ -102,5 +103,15 @@ export class UserController {
     @Body() dto: UpdatePasswordDto,
   ) {
     return this.userService.update_user_password(user_id, dto);
+  }
+
+  @ApiBearerAuth()
+  @Put('metadata')
+  @HttpCode(HttpStatus.OK)
+  update_user_metadata(
+    @GetCurrentUserId() user_id: string,
+    @Body() dto: UpdateMetadataDto,
+  ) {
+    return this.userService.update_user_metadata(user_id, dto);
   }
 }

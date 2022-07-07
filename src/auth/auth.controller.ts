@@ -13,10 +13,7 @@ import { RefreshTokenGuard } from '../common/guards';
 import { GetCurrentUser, GetCurrentUserId, Public } from '../common/decorators';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Response } from 'express';
-
-const rt_expire_time = 172800000;
-const lg_expire_time = 0;
-const ac_expires = 13;
+import { ac_expires, lg_expire_time, rt_expire_time } from './jwt_setting';
 
 @Controller('auth')
 export class AuthController {

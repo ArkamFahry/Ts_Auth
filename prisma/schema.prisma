@@ -23,5 +23,6 @@ model users {
   created_at DateTime  @default(now()) @db.Timestamptz(6)
   updated_at DateTime? @db.Timestamptz(6)
   hashed_rt  String?
+  metadata   Json?
   roles      roles     @relation(fields: [role], references: [role], onDelete: NoAction, onUpdate: NoAction, map: "users_role_foreign")
 }
