@@ -1,1 +1,1 @@
-export const default_role = process.env.DEFAULT_ROLE || 'user';
+export const default_role = process.env.DEFAULT_ROLE || 'authenticated';
