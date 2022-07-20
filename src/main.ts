@@ -23,6 +23,6 @@ async function bootstrap() {
     credentials: true,
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   });
-  await app.listen(process.env.PORT || 3011);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
